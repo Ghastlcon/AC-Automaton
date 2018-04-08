@@ -14,7 +14,7 @@ string x[MAXPOINT];
     void EnumFile(void)
     {
         _finddata_t v;
-        long h;
+        int h;
 
         h = _findfirst("../../data/"FILENAME"/*.in", &v);
         do
@@ -23,7 +23,7 @@ string x[MAXPOINT];
                 x[n   ]  = "../../data/"FILENAME"/";
                 x[n ++] += v.name;
             }
-        while(_findnext(h, &v) == 0);
+        while(!_findnext(h, &v));
         _findclose(h);
 
         return;
