@@ -30,6 +30,24 @@ string x[MAXPOINT];
     }
 #else
 
+    #include <dirent.h>
+    #include <cstring>
+    bool is_in(const char *file) {
+        int len = strlen(file);
+        return file[len-1] == 'n' && file[len-2] == 'i' && file[len-3] == '.';
+    }
+    void EnumFile(void) {
+        DIR *dir;
+        struct dirent *file;
+
+        dir = opendir("../../data/"FILENAME"/");
+        while ((file = readdir(dir)))
+            if ((file->d_type & DT_REG) && is_in(file->d_name)) {
+                x[n  ]  = "../../data/"FILENAME"/";
+                x[n++] += file->d_name;
+            }
+    }
+
 #endif
 
 int MatchFile(void)
