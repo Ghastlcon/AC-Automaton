@@ -1,2 +1,4 @@
 # AC-Automaton
-An Accepted-Automaton (not Aho-Corasick Automaton) for the [Lemon](https://github.com/zhipeng-jia/project-lemon) judger.
+针对 [Lemon](https://github.com/zhipeng-jia/project-lemon) 评测器而设计的自动 AC 机（不是 AC 自动机！）。
+
+现支持 Windows/Linux 。
