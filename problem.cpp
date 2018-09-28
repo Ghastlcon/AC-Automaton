@@ -2,11 +2,11 @@
 #include <string>
 #include <cstdio>
 #define MAXPOINT 1000
-#define FILENAME "problem"
 using namespace std;
 
 int n;
 string x[MAXPOINT];
+string FileName,tmp;
 
 #ifdef WIN32
     #include <io.h>
@@ -16,11 +16,12 @@ string x[MAXPOINT];
         _finddata_t v;
         int h;
 
-        h = _findfirst("../../data/"FILENAME"/*.in", &v);
+        tmp = "../../data/" + FileName + "/*.in";
+        h = _findfirst(tmp.c_str(), &v);
         do
             if(!(v.attrib & _A_SUBDIR))
             {
-                x[n   ]  = "../../data/"FILENAME"/";
+                x[n   ]  = "../../data/"+FileName+"/";
                 x[n ++] += v.name;
             }
         while(!_findnext(h, &v));
@@ -40,10 +41,11 @@ string x[MAXPOINT];
         DIR *dir;
         struct dirent *file;
 
-        dir = opendir("../../data/"FILENAME"/");
+        tmp = "../../data/" + FileName + "/";
+        dir = opendir(tmp.c_str());
         while ((file = readdir(dir)))
             if ((file->d_type & DT_REG) && is_in(file->d_name)) {
-                x[n  ]  = "../../data/"FILENAME"/";
+                x[n  ]  = "../../data/" + FileName + "/";
                 x[n++] += file->d_name;
             }
     }
@@ -55,7 +57,8 @@ int MatchFile(void)
     FILE *a, *b;
     int i, c;
 
-    b = fopen(FILENAME".in", "r");
+    tmp = FileName + ".in";
+    b = fopen(tmp.c_str(), "r");
     for(i = 0;i < n;i ++)
     {
         a = fopen(x[i].c_str(), "r");
@@ -91,7 +94,8 @@ void OutputFile(int p)
 
     b[0] = "out";
     b[1] = "ans";
-    o = fopen(FILENAME".out", "w");
+    tmp = FileName + ".out";
+    o = fopen(tmp.c_str(), "w");
     for(k = 0;k < 2;k ++)
     {
         t = x[p].substr(0, x[p].size() - 2) + b[k];
@@ -105,8 +109,26 @@ void OutputFile(int p)
     return;
 }
 
+/* 0123.5678*/
+
+void GetFileName()
+{
+    FileName=__FILE__;
+    int pos;
+    #ifdef WIN32
+        pos = FileName.rfind('\\');
+    #else
+        pos = FileName.rfind('/');
+    #endif
+    FileName.erase(0,pos+1);
+    pos=FileName.rfind('.');
+    FileName.erase(pos,FileName.size()-pos);
+    return ;
+}
+
 int main(void)
 {
+    GetFileName();
     EnumFile();
     OutputFile(MatchFile());
 
