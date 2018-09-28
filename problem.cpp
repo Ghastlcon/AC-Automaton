@@ -109,6 +109,8 @@ void OutputFile(int p)
     return;
 }
 
+/* 0123.5678*/
+
 void GetFileName()
 {
     FileName=__FILE__;
@@ -119,7 +121,9 @@ void GetFileName()
         pos = FileName.rfind('/');
     #endif
     FileName.erase(0,pos+1);
-    FileName.erase(FileName.size()-4,4);
+    pos=FileName.rfind('.');
+    FileName.erase(pos,FileName.size()-pos);
+    return ;
 }
 
 int main(void)
